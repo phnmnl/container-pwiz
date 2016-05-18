@@ -1,0 +1,16 @@
+! HyStarNT V 4.0.10.0
+!
+! IndexFile
+
+! Pathes:
+HOST.1	 =	"\\TOF-PC-2.ipb-halle.de\"
+PATH.1	 =	"D:\Data\neg-MM8_1-A,1_01_376.d\"
+
+! file definitions:
+CHROMATOGRAM	 =	"HOST.1 PATH.1 neg-MM8_1-A,1_01_376.unt"
+CHROMATOGRAM.STAMP	 =	"01/17/15 04:08:03"
+UV.START	 =	"0.0 min"
+UV.DAD	 =	"HOST.1 PATH.1 neg-MM8_1-A,1_01_376.u2"
+UV.DAD.STAMP	 =	"01/17/15 04:08:03"
+
+! events:

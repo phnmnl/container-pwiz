@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<method>
+<submethods>
+<submethod program="HyStar_LC" revision="1">
+<name>PDA-20min-full loop.m</name>
+<files>
+<file name="hystar.method"/>
+</files>
+</submethod>
+<submethod program="HyStar_Autosampler" revision="1">
+<name>Standard</name>
+<files/>
+</submethod>
+<submethod program="DataAnalysis" revision="0">
+<name>Recal-LiForm-neg-18min-HPC.m</name>
+<files>
+<file name="DataAnalysis.Method"/>
+</files>
+</submethod>
+<submethod program="microTOFQControl" revision="60">
+<name>20minKalibneg.m</name>
+<files>
+<file name="microTOFQAcquisition.method"/>
+</files>
+</submethod>
+</submethods>
+<locked>false</locked>
+<readonly>true</readonly>
+<comment></comment>
+</method>
