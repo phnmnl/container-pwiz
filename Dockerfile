@@ -15,9 +15,6 @@ RUN apt-get -y upgrade
 ## Get dummy X11 server
 RUN apt-get install -y xvfb winbind cabextract
 
-# You might need a proxy:
-# ENV http_proxy http://www-cache.ipb-halle.de:3128
-
 # WINE does not like running as root
 USER xclient
 
@@ -35,6 +32,7 @@ RUN wine wineboot --init \
                 && /scripts/waitonprocess.sh wineserver \
                 && /usr/bin/xvfb-run winetricks --unattended msxml3 \
                 && /scripts/waitonprocess.sh wineserver
+
 
 # Install .NET Framework 3.5sp1
 RUN wine wineboot --init \
@@ -54,9 +52,17 @@ RUN wine wineboot --init \
 # Pull from TeamCity:
 ADD http://teamcity.labkey.org:8080/repository/download/bt36/3391%20(9098)/pwiz-setup-3.0.9098-x86.msi?guest=1 /tmp/pwiz-setup-3.0.9098-x86.msi
 
+## For unknown reasons pwiz-setup-3.0.9098-x86.msi
+## was -rw------- 1 root root 55451648 Nov  1  2015 /tmp/pwiz-setup-3.0.9098-x86.msi
+
+USER root
+RUN chmod 755 /tmp/pwiz-setup-3.0.9098-x86.msi
+USER xclient
+
 RUN wine wineboot --init \
 		&& /scripts/waitonprocess.sh wineserver \
-		&& msiexec /i  /tmp/pwiz-setup-3.0.9098-x86.msi \
+		&& msiexec /i /tmp/pwiz-setup-3.0.9098-x86.msi /quiet \
+		&& xvfb-run wine "/home/xclient/.wine/drive_c/Program Files/ProteoWizard/ProteoWizard 3.0.9098/msconvert.exe" \
 		&& /scripts/waitonprocess.sh wineserver
 
 WORKDIR /data
@@ -64,3 +70,8 @@ ENTRYPOINT [ "wine", "/home/xclient/.wine/drive_c/Program Files/ProteoWizard/Pro
 
 ## Later try something like:
 ## wget 'http://teamcity.labkey.org:8080/repository/download/bt36/.lastSuccessful/pwiz-setup-'$(wget -O- http://teamcity.labkey.org:8080/repository/download/bt36/.lastSuccessful/VERSION?guest=1)'-x86.msi?guest=1'
+
+## If you need a proxy during build, don't put it into the Dockerfile itself:
+## docker build --build-arg http_proxy=http://www-cache.ipb-halle.de:3128/  -t phnmnl/pwiz:3.0.9098-0.1 .
+
+
