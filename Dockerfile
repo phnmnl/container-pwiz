@@ -1,4 +1,4 @@
-#FROM suchja/wine:dev
+FROM suchja/wine:dev
 
 MAINTAINER PhenoMeNal-H2020 Project ( phenomenal-h2020-users@googlegroups.com )
 
@@ -10,7 +10,7 @@ RUN chmod +x /scripts/waitonprocess.sh
 
 ## Freshen packages
 RUN apt-get -y update
-RUN apt-get -y upgrade
+#RUN apt-get -y upgrade
 
 ## Get dummy X11 server
 RUN apt-get install -y xvfb winbind cabextract
@@ -48,23 +48,15 @@ RUN wine wineboot --init \
                 && /usr/bin/xvfb-run winetricks --unattended dotnet40 dotnet_verifier \
                 && /scripts/waitonprocess.sh wineserver
 
-# Install CompassXport
-RUN wine wineboot --init \
-                && /scripts/waitonprocess.sh wineserver \
-                && /usr/bin/xvfb-run wine "/tmp/CompassXport_3.0.9.2_Setup.exe" /S /v/qn \
-                && /scripts/waitonprocess.sh wineserver
-
-USER xclient
-
 # Local copy:
-# COPY pwiz-setup-3.0.9098-x86.msi /tmp
+#COPY pwiz-setup-3.0.9098-x86.msi /tmp
 
 # Pull from TeamCity:
 ADD http://teamcity.labkey.org:8080/repository/download/bt36/3391%20(9098)/pwiz-setup-3.0.9098-x86.msi?guest=1 /tmp/pwiz-setup-3.0.9098-x86.msi
 
 RUN wine wineboot --init \
 		&& /scripts/waitonprocess.sh wineserver \
-		&& msiexec /i  /tmp/pwiz-setup-*.msi \
+		&& msiexec /i  /tmp/pwiz-setup-3.0.9098-x86.msi \
 		&& /scripts/waitonprocess.sh wineserver
 
 WORKDIR /data
