@@ -10,7 +10,7 @@ RUN chmod +x /scripts/waitonprocess.sh
 
 ## Freshen packages
 RUN apt-get -y update
-#RUN apt-get -y upgrade
+RUN apt-get -y upgrade
 
 ## Get dummy X11 server
 RUN apt-get install -y xvfb winbind cabextract
