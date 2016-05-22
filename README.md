@@ -18,6 +18,7 @@ convert GC/MS data for example from the Waters GCT Premier or Agilent instrument
 Please note that for licensing reasons we can not include all required 
 files in this repository. Please head over to http://proteowizard.sourceforge.net/downloads.shtml
 and place the installer pwiz-setup-3.0.9098-x86.msi in this directory.
+Also note that the build is known to fail with Docker-1.9, make sure to use Docker-1.10 or above.
 
 ## Using the Docker image
 
@@ -33,6 +34,8 @@ The currently tested vendor formats are:
 
 ## Galaxy usage
 
+A rudimentary Galaxy node description is included as `msconvert.xml`, 
+it was obtained from the `msconvert.ctd` using 
 `python CTD2Galaxy/generator.py -i /vol/phenomenal/vmis/docker-pwiz/msconvert.ctd -m sample_files/macros.xml -o /vol/phenomenal/vmis/docker-pwiz/msconvert.xml`
 
 
