@@ -20,12 +20,16 @@ files in this repository. Please head over to http://proteowizard.sourceforge.ne
 and place the installer pwiz-setup-3.0.9098-x86.msi in this directory.
 Also note that the build is known to fail with Docker-1.9, make sure to use Docker-1.10 or above.
 
+`docker build --tag="phnmnl/pwiz:latest" .`
+
 ## Using the Docker image
 
 After building the image, the conversion can be started with e.g. 
 
-`docker run -v $PWD:/data phnmnl/pwiz:3.0.9098-0.1 /data/neg-MM8_1-A,1_01_376.d/
-/data/neg-MM8_1-A,1_01_376.mzML`
+#`docker run -v $PWD:/data phnmnl/pwiz:3.0.9098-0.1 /data/neg-MM8_1-A,1_01_376.d/
+#/data/neg-MM8_1-A,1_01_376.mzML`
+
+`docker run -v $PWD:/data:rw phnmnl/pwiz:latest /data/neg-MM8_1-A,1_01_376.d -o /data/ --mzML`
 
 The currently tested vendor formats are:
 
