@@ -26,9 +26,6 @@ Also note that the build is known to fail with Docker-1.9, make sure to use Dock
 
 After building the image, the conversion can be started with e.g. 
 
-#`docker run -v $PWD:/data phnmnl/pwiz:3.0.9098-0.1 /data/neg-MM8_1-A,1_01_376.d/
-#/data/neg-MM8_1-A,1_01_376.mzML`
-
 `docker run -v $PWD:/data:rw phnmnl/pwiz:latest /data/neg-MM8_1-A,1_01_376.d -o /data/ --mzML`
 
 The currently tested vendor formats are:
