@@ -2,6 +2,8 @@ FROM suchja/wine:dev
 
 MAINTAINER PhenoMeNal-H2020 Project ( phenomenal-h2020-users@googlegroups.com )
 
+LABEL Description="Convert LC/MS or GC/MS RAW vendor files to mzML."
+
 # unfortunately we later need to wait on wineserver.
 # Thus a small script for waiting is supplied.
 USER root
