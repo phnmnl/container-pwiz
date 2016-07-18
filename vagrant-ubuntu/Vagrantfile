@@ -6,12 +6,7 @@ Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.hostname = "vagrant-pwiz"
 
-  config.vm.provider "virtualbox" do |v|
-    v.gui = true
-  end
-  
   config.vm.provision :shell, path: "install-docker.sh"
   config.vm.provision :shell, privileged: false, path: "docker-pwiz.sh"
-  config.vm.provision :shell, inline: "apt-get install -y xfce4 virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11"
     
 end
