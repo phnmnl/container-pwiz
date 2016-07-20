@@ -3,7 +3,7 @@
 <!--Proposed Tool Section: [File Handling]-->
 <tool id="msconvert" name="msconvert" version="3.0.9098-0.2">
   <requirements>
-    <container type="docker">phnmnl/nmrmlconv</container>
+    <container type="docker">phnmnl/pwiz</container>
   </requirements>
   <description>Converts vendor RAW MS to mzML.</description>
   <command>
