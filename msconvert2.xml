@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--This is a configuration file for the integration of a tools into Galaxy (https://galaxyproject.org/). This file was automatically generated using CTD2Galaxy.-->
+<!--Proposed Tool Section: [File Handling]-->
+<tool id="msconvert2" name="msconvert2" version="3.0.9098-2.0">
+  <requirements>
+    <container type="docker">phnmnl/pwiz</container>
+  </requirements>
+  <description>Converts vendor RAW MS to mzML.</description>
+  <command>
+    wine '/home/xclient/.wine/drive_c/Program Files/ProteoWizard/ProteoWizard/msconvert.exe' $infile --mzML -o '-' 2>/dev/null | cat >$outfile
+</command>
+  <inputs>
+    <param name="infile" type="data" format="data" value="&lt;class 'CTDopts.CTDopts._Null'&gt;" optional="False" label="Input file to convert" />
+  </inputs>
+  <outputs>
+    <data name="outfile" type="mzML" format="mzML"/>
+  </outputs>
+  <help>Converts between different MS file formats. For more information, visit http://proteowizard.sourceforge.net/tools/msconvert.html</help>
+</tool>
