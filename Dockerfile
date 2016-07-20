@@ -8,7 +8,7 @@ LABEL Description="Convert LC/MS or GC/MS RAW vendor files to mzML."
 # Thus a small script for waiting is supplied.
 USER root
 COPY waitonprocess.sh /scripts/
-RUN chmod +x /scripts/waitonprocess.sh
+RUN chmod a+rx /scripts/waitonprocess.sh
 
 ## Freshen packages
 RUN apt-get -y update
