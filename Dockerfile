@@ -97,7 +97,6 @@ RUN mkdir /data
 RUN chmod 777 /data
 RUN chown xclient:xusers /data
 RUN chown xclient:xusers /
-USER xclient
 WORKDIR /data
 
 #ENTRYPOINT [ "wine", "/home/xclient/.wine/drive_c/Program Files/ProteoWizard/ProteoWizard/msconvert.exe" ]
