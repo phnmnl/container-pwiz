@@ -7,10 +7,13 @@
   </requirements>
   <description>Converts vendor RAW MS to mzML.</description>
   <command><![CDATA[
-    unzip -q -d /tmp/galaxy_job $infile;
-    chown -R xclient:xusers /tmp/galaxy_job;
-    su xclient -c "wine '/home/xclient/.wine/drive_c/Program Files/ProteoWizard/ProteoWizard/msconvert.exe' /tmp/galaxy_job --mzML -o /tmp/" 2>/dev/null;
-    cat /tmp/galaxy_job.mzML > $outfile
+    mkdir -p \$PWD/tmp_msconvert/out;
+    unzip -q -d \$PWD/tmp_msconvert/out $infile;
+    chown -R xclient:xusers \$PWD/tmp_msconvert;
+    su xclient -c "wine '/home/xclient/.wine/drive_c/Program Files/ProteoWizard/
+ProteoWizard/msconvert.exe' \$PWD/tmp_msconvert/out --mzML -o \$PWD/tmp_msconver
+t" 2>/dev/null;
+    sudo mv \$PWD/tmp_msconvert/out.mzML $outfile	  
   ]]></command>
   <inputs>
     <param name="infile" type="data" format="data" value="&lt;class 'CTDopts.CTDopts._Null'&gt;" optional="False" label="Input file to convert" />
