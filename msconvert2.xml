@@ -1,19 +1,17 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--This is a configuration file for the integration of a tools into Galaxy (https://galaxyproject.org/). This file was automatically generated using CTD2Galaxy.-->
 <!--Proposed Tool Section: [File Handling]-->
-<tool id="msconvert2" name="msconvert2" version="3.0.9098-2.1">
+<tool id="msconvert2" name="msconvert2" version="3.0.9098-2.2">
   <requirements>
-    <container type="docker">phnmnl/pwiz</container>
+    <container type="docker">phnmnl/msconvert</container>
   </requirements>
   <description>Converts vendor RAW MS to mzML.</description>
   <command><![CDATA[
     mkdir -p \$PWD/tmp_msconvert/out;
     unzip -q -d \$PWD/tmp_msconvert/out $infile;
     chown -R xclient:xusers \$PWD/tmp_msconvert;
-    su xclient -c "wine '/home/xclient/.wine/drive_c/Program Files/ProteoWizard/
-ProteoWizard/msconvert.exe' \$PWD/tmp_msconvert/out --mzML -o \$PWD/tmp_msconver
-t" 2>/dev/null;
-    sudo mv \$PWD/tmp_msconvert/out.mzML $outfile	  
+    su xclient -c "wine '/home/xclient/.wine/drive_c/Program Files/ProteoWizard/ProteoWizard/msconvert.exe' \$PWD/tmp_msconvert/out --mzML -o \$PWD/tmp_msconvert" 2>/dev/null;
+    sudo mv \$PWD/tmp_msconvert/out.mzML $outfile
   ]]></command>
   <inputs>
     <param name="infile" type="data" format="data" value="&lt;class 'CTDopts.CTDopts._Null'&gt;" optional="False" label="Input file to convert" />

@@ -69,9 +69,6 @@ RUN wine wineboot --init \
                 && /usr/bin/xvfb-run winetricks --unattended dotnet40 dotnet_verifier \
                 && /scripts/waitonprocess.sh wineserver
 
-# Local copy
-#COPY pwiz-setup-3.0.9098-x86.msi /tmp
-
 # Pull from TeamCity
 ADD http://teamcity.labkey.org:8080/repository/download/bt36/3391%20(9098)/pwiz-setup-3.0.9098-x86.msi?guest=1 /tmp/pwiz-setup.msi
 USER root
@@ -99,8 +96,10 @@ RUN chown xclient:xusers /data
 RUN chown xclient:xusers /
 WORKDIR /data
 
+#USER xclient
+
 #ENTRYPOINT [ "wine", "/home/xclient/.wine/drive_c/Program Files/ProteoWizard/ProteoWizard/msconvert.exe" ]
-ENTRYPOINT [ "/bin/bash", "-c" ]
+#ENTRYPOINT [ "/bin/bash", "-c" ]
 
 ## If you need a proxy during build, don't put it into the Dockerfile itself:
 ## docker build --build-arg http_proxy=http://www-cache.ipb-halle.de:3128/  -t phnmnl/pwiz:3.0.9098-0.1 .
