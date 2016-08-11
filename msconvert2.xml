@@ -3,7 +3,7 @@
 <!--Proposed Tool Section: [File Handling]-->
 <tool id="msconvert2" name="msconvert2" version="3.0.9098-2.2">
   <requirements>
-    <container type="docker">phnmnl/msconvert</container>
+    <container type="docker">phnmnl/pwiz</container>
   </requirements>
   <description>Converts vendor RAW MS to mzML.</description>
   <command><![CDATA[
@@ -17,7 +17,7 @@
     <param name="infile" type="data" format="data" value="&lt;class 'CTDopts.CTDopts._Null'&gt;" optional="False" label="Input file to convert" />
   </inputs>
   <outputs>
-    <data name="outfile" type="mzML" format="mzML"/>
+    <data name="outfile" type="data" format="mzml"/>
   </outputs>
   <help>Converts between different MS file formats. For more information, visit http://proteowizard.sourceforge.net/tools/msconvert.html</help>
 </tool>
