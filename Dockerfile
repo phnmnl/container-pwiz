@@ -37,7 +37,7 @@ RUN export ln="$(cat /tmp/cnet.tmp | grep -n 'Download Now' | sed -e 's/\:.*//')
 		&& export ln=$(expr $ln - 1) \
 		&& export dl="$(sed -n -e "$ln,$ln p" /tmp/cnet.tmp | perl -pe "s/.*href\=\'//" | perl -pe "s/\'.*//")" \
 		&& wget -O /tmp/cnet2.tmp "$dl"
-RUN export dl2="$(cat /tmp/cnet2.tmp | grep msxml3 | grep data-nodlm-url | perl -pe "s/.*\=\'//" | perl -pe "s/\'.*//")" \
+RUN export dl2="$(cat /tmp/cnet2.tmp | grep msxml3 | grep data-dl-url | perl -pe "s/.*\=\'//" | perl -pe "s/\'.*//")" \
 		&& mkdir -p .cache/winetricks/msxml3 \
 		&& wget -O .cache/winetricks/msxml3/msxml3.msi "$dl2"
 
