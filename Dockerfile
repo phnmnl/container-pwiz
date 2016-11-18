@@ -70,17 +70,22 @@ RUN wine wineboot --init \
                 && /scripts/waitonprocess.sh wineserver
 
 # Pull from TeamCity
+USER xclient
 ADD http://teamcity.labkey.org:8080/repository/download/bt36/3391%20(9098)/pwiz-setup-3.0.9098-x86.msi?guest=1 /tmp/pwiz-setup.msi
 USER root
 RUN chmod 755 /tmp/pwiz-setup.msi
 RUN echo -n "3.0.9098" > /tmp/pwiz.version
+
+# Pull linux CLI from BioDocker
+# also see: https://raw.githubusercontent.com/BioContainers/containers/master/proteowizard/3_0_9740/Dockerfile
+USER root
+ENV PWIZ_LINUX="pwiz-bin-linux-x86_64-gcc48-release-3_0_9740"
+RUN wget -O /tmp/${PWIZ_LINUX}.zip https://github.com/BioDocker/software-archive/releases/download/proteowizard/${PWIZ_LINUX}.zip
+WORKDIR /tmp
+RUN unzip ${PWIZ_LINUX}.zip
+install -m755 /tmp/${PWIZ_LINUX}/*[^xsd] /usr/bin/
+
 USER xclient
-
-# Pull latest version from TeamCity
-#RUN wget -O /tmp/pwiz.version 'http://teamcity.labkey.org:8080/repository/download/bt36/.lastSuccessful/VERSION?guest=1'
-#RUN wget -O /tmp/pwiz-setup.msi 'http://teamcity.labkey.org:8080/repository/download/bt36/.lastSuccessful/pwiz-setup-'$(cat /tmp/pwiz.version)'-x86.msi?guest=1'
-#RUN chmod 755 /tmp/pwiz-setup.msi
-
 RUN wine wineboot --init \
 		&& /scripts/waitonprocess.sh wineserver \
 		&& msiexec /i /tmp/pwiz-setup.msi \
