@@ -82,7 +82,7 @@ ENV PWIZ_LINUX="pwiz-bin-linux-x86_64-gcc48-release-3_0_9740"
 RUN curl -L -o /tmp/${PWIZ_LINUX}.zip https://github.com/BioDocker/software-archive/releases/download/proteowizard/${PWIZ_LINUX}.zip
 WORKDIR /tmp
 RUN unzip ${PWIZ_LINUX}.zip
-install -m755 /tmp/${PWIZ_LINUX}/*[^xsd] /usr/local/bin/
+RUN install -m755 /tmp/${PWIZ_LINUX}/*[^xsd] /usr/local/bin/
 
 USER xclient
 RUN wine wineboot --init \
