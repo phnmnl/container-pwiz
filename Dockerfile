@@ -33,7 +33,7 @@ WORKDIR /home/xclient
 # BUG: Download msxml3 manually
 RUN wget -O /tmp/cnet.tmp 'http://download.cnet.com/Microsoft-XML-Parser-MSXML-3-0-Service-Pack-7-SP7/3000-7241_4-10731613.html'
 RUN export ln="$(cat /tmp/cnet.tmp | grep -n 'Download Now' | sed -e 's/\:.*//')" \
-		&& export ln=$(expr $ln - 1) \
+		&& export ln=$(expr $ln - 3) \
 		&& export dl="$(sed -n -e "$ln,$ln p" /tmp/cnet.tmp | perl -pe "s/.*href\=\'//" | perl -pe "s/\'.*//")" \
 		&& wget -O /tmp/cnet2.tmp "$dl"
 RUN export dl2="$(cat /tmp/cnet2.tmp | grep msxml3 | grep data-dl-url | perl -pe "s/.*\=\'//" | perl -pe "s/\'.*//")" \
