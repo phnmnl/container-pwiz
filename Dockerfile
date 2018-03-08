@@ -36,9 +36,10 @@ RUN export ln="$(cat /tmp/cnet.tmp | grep -n 'Download Now' | sed -e 's/\:.*//')
 		&& export ln=$(expr $ln - 3) \
 		&& export dl="$(sed -n -e "$ln,$ln p" /tmp/cnet.tmp | perl -pe "s/.*href\=\'//" | perl -pe "s/\'.*//")" \
 		&& wget -O /tmp/cnet2.tmp "$dl"
-RUN export dl2="$(cat /tmp/cnet2.tmp | grep msxml3 | grep data-dl-url | perl -pe "s/.*\=\'//" | perl -pe "s/\'.*//")" \
+RUN sleep 10
+RUN export dl2="$(cat /tmp/cnet2.tmp | grep msxml3 | grep data-dw-wrap | perl -pe "s/.*href\=\"//" | perl -pe "s/\".*//")" \
 		&& mkdir -p .cache/winetricks/msxml3 \
-		&& wget -O .cache/winetricks/msxml3/msxml3.msi "$dl2"
+		&& wget -O .cache/winetricks/msxml3/msxml3.msi --user-agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:58.0) Gecko/20100101 Firefox/58.0" "$dl2"
 
 # get at least error information from wine
 ENV WINEDEBUG -all,err+all
