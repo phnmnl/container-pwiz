@@ -64,6 +64,11 @@ RUN mkdir /root/.wine/drive_c/pwiz && \
 ENV WINEPATH "C:\pwiz"
 #ENV DISPLAY :0
 
+## Prepare for container testing following 
+## https://github.com/phnmnl/phenomenal-h2020/wiki/Testing-Guide-Proposal-3
+ADD runTest1.sh /usr/local/bin/runTest1.sh
+RUN chmod +x /usr/local/bin/runTest1.sh
+
 # Set up working directory and permissions to let user xclient save data
 RUN mkdir /data
 WORKDIR /data

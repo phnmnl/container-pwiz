@@ -6,7 +6,7 @@ function DOWNLOAD() {
 
 	# Download expected output and run it through mscat
 	curl -L -o /tmp/test.mzml_expected_output "https://github.com/phnmnl/container-pwiz/raw/master/neg-MM8_1-A%2C1_01_376.mzML"
-	mscat /tmp/test.mzml_expected_output > /tmp/test.expected_output
+	wine mscat /tmp/test.mzml_expected_output > /tmp/test.expected_output
 }
 
 function MSCONVERT() {
