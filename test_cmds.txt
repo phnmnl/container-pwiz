@@ -1,1 +1,1 @@
-wine msconvert -h
+wine msconvert --help
