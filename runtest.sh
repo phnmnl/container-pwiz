@@ -13,8 +13,8 @@ function MSCONVERT() {
 	# Process RAW, create mzml and run it through mscat
 	unzip -d /tmp/test /tmp/test.zip
 	#export WINEPREFIX=~/.wine-new
-	wine /home/xclient/.wine/drive_c/Program\ Files/ProteoWizard/ProteoWizard\ 3.0.9098/msconvert.exe /tmp/test --mzML
-	mscat /tmp/test.mzML > /tmp/test.output
+	wine msconvert.exe /tmp/test --mzML
+	wine mscat /tmp/test.mzML > /tmp/test.output
 }
 
 function EXIT1() {
@@ -26,8 +26,6 @@ function TEST1() {
 	# Compare msconvert-output with expected output
 	cmp /tmp/test.output /tmp/test.expected_output || EXIT1
 }
-
-
 
 # Set WORKDIR!!!
 cd /tmp
