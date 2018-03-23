@@ -68,7 +68,7 @@ ENV WINEPATH "C:\pwiz"
 RUN mkdir /data
 WORKDIR /data
 
-#CMD ["wine", "msconvert" ]
+CMD ["wine", "msconvert" ]
 
 
 ## If you need a proxy during build, don't put it into the Dockerfile itself:
