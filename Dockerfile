@@ -1,4 +1,22 @@
 FROM i386/debian:stretch-backports
+
+################################################################################
+### set metadata
+ENV TOOL_NAME=msconvert
+ENV TOOL_VERSION=phenomenal_2018_03_23
+ENV CONTAINER_VERSION=1.0
+ENV CONTAINER_GITHUB=https://github.com/phnmnl/container-pwiz
+
+LABEL version="${CONTAINER_VERSION}"
+LABEL software.version="${TOOL_VERSION}"
+LABEL software="${TOOL_NAME}"
+LABEL base.image="i386/debian:stretch-backports"
+LABEL description="Convert LC/MS or GC/MS RAW vendor files to mzML."
+LABEL website="${CONTAINER_GITHUB}"
+LABEL documentation="${CONTAINER_GITHUB}"
+LABEL license="${CONTAINER_GITHUB}"
+LABEL tags="Metabolomics"
+
 # we need wget, bzip2, wine from winehq, 
 # xvfb to fake X11 for winetricks during installation,
 # and winbind because wine complains about missing 
