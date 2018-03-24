@@ -69,7 +69,7 @@ ENV WINEPATH "C:\pwiz"
 ADD runTest1.sh /usr/local/bin/runTest1.sh
 RUN chmod +x /usr/local/bin/runTest1.sh
 
-ADD runTest1.sh /usr/local/bin/runTest2.sh
+ADD runTest2.sh /usr/local/bin/runTest2.sh
 RUN chmod +x /usr/local/bin/runTest2.sh
 
 # Set up working directory and permissions to let user xclient save data
