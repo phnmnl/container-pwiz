@@ -76,6 +76,9 @@ RUN mkdir /root/.wine/drive_c/pwiz && \
     wget https://teamcity.labkey.org/repository/download/bt36/`cat /tmp/pwiz.build`:id/pwiz-bin-windows-x86-vc120-release-`cat /tmp/pwiz.version | tr " " "_"`.tar.bz2?guest=1 -qO- | \
       tar --directory=/root/.wine/drive_c/pwiz -xj
 
+## Add wrapper with xauth handling
+ADD MSconvertGUI.sh /usr/local/bin
+
 ## Prepare for container testing following 
 ## https://github.com/phnmnl/phenomenal-h2020/wiki/Testing-Guide-Proposal-3
 ADD runTest1.sh /usr/local/bin/runTest1.sh

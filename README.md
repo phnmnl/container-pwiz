@@ -64,6 +64,10 @@ The currently tested vendor formats are:
 * mzXML: `docker run -it -v $PWD:/data phnmnl/pwiz--i-agree-to-the-vendor-licenses:latest threonine_i2_e35_pH_tree.mzXML`
 * Bruker .d: `docker run -it -v $PWD:/data phnmnl/phnmnl/pwiz--i-agree-to-the-vendor-licenses:latest neg-MM8_1-A,1_01_376.d`
 
+To run the MSconvertGUI as shown in the above screenshot, you have to enable X11 access on the client machine, and pass the X11 information to the container:
+
+`docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v $HOME:/data:rw phnmnl/pwiz--i-agree-to-the-vendor-licenses wine MSconvertGUI`
+
 ## Galaxy usage
 
 A rudimentary Galaxy node description is included as `msconvert.xml`,
