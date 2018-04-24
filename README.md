@@ -61,7 +61,7 @@ The conversion can be started with e.g.
 
 The currently tested vendor formats are:
 
-* mzXML: `docker run -it -v $PWD:/data phnmnl/pwizphnmnl/pwiz--i-agree-to-the-vendor-licenses:latest threonine_i2_e35_pH_tree.mzXML`
+* mzXML: `docker run -it -v $PWD:/data phnmnl/pwiz--i-agree-to-the-vendor-licenses:latest threonine_i2_e35_pH_tree.mzXML`
 * Bruker .d: `docker run -it -v $PWD:/data phnmnl/phnmnl/pwiz--i-agree-to-the-vendor-licenses:latest neg-MM8_1-A,1_01_376.d`
 
 ## Galaxy usage
@@ -80,7 +80,7 @@ in the created container. By building this container, you agree
 to all the vendor licenses that are shown at the above download links,
 and also included in the container and Dockerfile repository. To build, please use
 
-`docker build --tag="phnmnl/pwizphnmnl/pwiz--i-agree-to-the-vendor-licenses:latest" .`
+`docker build --tag="phnmnl/pwiz--i-agree-to-the-vendor-licenses:latest" .`
 
 Also note that the build is known to fail with Docker-1.9, make sure to use Docker-1.10 or above.
 
