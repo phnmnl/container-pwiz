@@ -1,0 +1,360 @@
+@charset "UTF-8";
+/* CSS Document */
+
+
+/* ~~ Element/tag selectors ~~ */
+ul, ol, dl { /* Due to variations between browsers, it's best practices to zero padding and margin on lists. For consistency, you can either specify the amounts you want here, or on the list items (LI, DT, DD) they contain. Remember that what you do here will cascade to the .nav list unless you write a more specific selector. */
+	padding: 0;
+	margin: 0;
+	display: block;
+}
+h1, h2, h3, h4, h5, h6, p {
+	margin-top: 0;	 /* removing the top margin gets around an issue where margins can escape from their containing div. The remaining bottom margin will hold it away from any elements that follow. */
+	padding-right: 15px;
+	padding-left: 15px; /* adding the padding to the sides of the elements within the divs, instead of the divs themselves, gets rid of any box model math. A nested div with side padding can also be used as an alternate method. */
+}
+
+
+h1 {
+	font-size: 18px;
+	color: #9933FF;
+}
+h2 {
+	font-size: 16px;
+	color: #609;
+}
+
+h3 {
+	font-size: 14px;
+	color: #9933FF;
+}
+h4 {
+	font-size: 12px;
+	color: #000;
+}
+
+
+body {
+	font-family: Cambria, Calibri, Corbel, Candara, Consolas, Verdana,Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	margin: 0;
+	padding: 0;
+	color: #000;
+	}
+
+
+td, textarea, input, select {
+	font-family: Tahoma;
+	font-size: 13px;
+	color: #000;
+	font-weight: normal;
+}
+.tableDetail {
+	font-size: 12px;
+	font-family: Verdana;
+	color: #49394E;
+}
+
+
+
+a img { /* this selector removes the default blue border displayed in some browsers around an image when it is surrounded by a link */
+	border: none;
+}
+
+
+a:hover, a:active, a:focus { /* this group of selectors will give a keyboard navigator the same hover experience as the person using a mouse. */
+	text-decoration: none;
+}
+
+a {
+	font-family: Verdana, tahoma, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+a:link {
+	color: #F60;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: none;
+	text-decoration: underline; /* unless you style your links to look extremely unique, it's best to provide underlines for quick visual identification */
+
+}
+
+
+a:active {
+	text-decoration: none;
+}
+
+a:hover {
+	color: #90C407;
+	font-size: 12px;
+	font-weight: bold;
+	font-style: normal;
+	line-height: normal;
+	font-variant: normal;
+	text-transform: none;
+	text-decoration: underline;
+}
+a:visited {
+	color: #666;
+	font-size: 12px;
+	font-weight: bold;
+	font-style: normal;
+	text-decoration: none;
+
+}
+
+.text0 {
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: normal;
+	color: #FFFFFF;
+}
+
+
+.text1 {
+	font-family: tahoma;
+	font-size: 12px;
+	color: FF9933;
+	font-weight: bold;
+}
+.text2 {
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	color: #000000;
+}
+.text3 {
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	color: 8A8EC1;
+}
+.text4 {
+	font-family: tahoma;
+	font-size: 14px;
+	font-weight: bold;
+	color: BF302C;
+}
+.text5 {
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: normal;
+	color: C6C6C6;
+}
+.text6 {
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+.text7 {
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: normal;
+	color: #000000;
+}
+.text8 {
+
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: normal;
+	color: 94AEC5;
+}
+.text9 {
+
+
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: normal;
+	color: 4E4E4E;
+}
+.frame {
+	border: 1px solid #A6A6A6;
+}
+.designed_by {
+	font-family: Arial;
+	font-size: 8.5px;
+	font-weight: lighter;
+	color: #000000;
+}
+a.a:link {
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: normal;
+	color: #FFFFFF;
+	text-decoration: underline;
+}
+a.a:hover {
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: normal;
+	color: #000000;
+	text-decoration: none;
+}
+a.a:visited {
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: normal;
+	color: #FFFFFF;
+	text-decoration: underline;
+}
+a.b:link {
+
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	color: 7C7C7C;
+	text-decoration: none;
+}
+a.b:hover {
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	color: #85B350;
+	text-decoration: underline;
+}
+a.b:visited {
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	color: 7C7C7C;
+	text-decoration: none;
+}
+a.c:link {
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-decoration: none;
+}
+a.c:hover {
+
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	color: #000000;
+	text-decoration: none;
+}
+a.c:visited {
+
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-decoration: none;
+}
+a.d:link {
+
+
+
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: normal;
+	color: #FFFFFF;
+	text-decoration: underline;
+}
+a.d:hover {
+
+
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-decoration: underline;
+}
+a.d:visited {
+
+
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: normal;
+	color: #FFFFFF;
+	text-decoration: underline;
+}
+a.e:link {
+
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	color: 944F23;
+	text-decoration: underline;
+}
+a.e:hover {
+
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	color: #4E4E4E;
+	text-decoration: underline;
+}
+a.e:visited {
+
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	color: 944F23;
+	text-decoration: underline;
+}
+a.f:link {
+
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: normal;
+	color: 594B13;
+	text-decoration: underline;
+}
+a.f:hover {
+
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: normal;
+	color: #4E4E4E;
+	text-decoration: underline;
+}
+a.f:visited {
+
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: normal;
+	color: 594B13;
+	text-decoration: underline;
+}
+a.g:link {
+
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	color: #000000;
+	text-decoration: underline;
+}
+a.g:hover {
+
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	color: #FF6600;
+	text-decoration: underline;
+}
+a.g:visited {
+
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	color: #000000;
+	text-decoration: underline;
+}
+.inputstyle {
+	font-family: tahoma;
+	font-size: 12px;
+	font-weight: normal;
+	color: #5F726F;
+	background-color: #E2EDEB;
+	border: 1px solid #333333;
+}

@@ -3,8 +3,8 @@ FROM i386/debian:stretch-backports
 ################################################################################
 ### set metadata
 ENV TOOL_NAME=msconvert
-ENV TOOL_VERSION=phenomenal_2018_03_23
-ENV CONTAINER_VERSION=1.0
+ENV TOOL_VERSION=3.0.18114
+ENV CONTAINER_VERSION=1.1
 ENV CONTAINER_GITHUB=https://github.com/phnmnl/container-pwiz
 
 LABEL version="${CONTAINER_VERSION}"
@@ -44,25 +44,37 @@ RUN apt-get update && \
       && \
     wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
       -O /usr/local/bin/winetricks && chmod +x /usr/local/bin/winetricks
-ENV WINEARCH win32
-WORKDIR /root/
-ADD waitonprocess.sh /root/waitonprocess.sh
-RUN chmod +x waitonprocess.sh
-# wineserver needs to shut down properly!!! 
-ENV WINEDEBUG -all,err+all
-RUN winetricks -q win7 && ./waitonprocess.sh wineserver
-RUN xvfb-run winetricks -q vcrun2008 corefonts && ./waitonprocess.sh wineserver
-RUN xvfb-run winetricks -q dotnet452 && ./waitonprocess.sh wineserver
-# download ProteoWizard and extract it to C:\pwiz
-# Pull latest version from TeamCity
-RUN wget -O /tmp/pwiz.version 'https://teamcity.labkey.org/repository/download/bt36/.lastSuccessful/VERSION?guest=1'
-RUN mkdir /root/.wine/drive_c/pwiz && \
-    wget https://teamcity.labkey.org/repository/download/bt36/561098:id/pwiz-bin-windows-x86-vc120-release-`cat /tmp/pwiz.version | tr " " "_"`.tar.bz2?guest=1 -qO- | \
-      tar --directory=/root/.wine/drive_c/pwiz -xj
 
 # put C:\pwiz on the Windows search path
+ENV WINEARCH win32
+ENV WINEDEBUG -all,err+all
 ENV WINEPATH "C:\pwiz"
-#ENV DISPLAY :0
+ENV DISPLAY :0
+WORKDIR /root/
+
+# wineserver needs to shut down properly!!! 
+ADD waitonprocess.sh /root/waitonprocess.sh
+RUN chmod +x waitonprocess.sh
+
+# Install dependencies
+RUN winetricks -q win7 && xvfb-run winetricks -q vcrun2008 corefonts && xvfb-run winetricks -q dotnet452 && ./waitonprocess.sh wineserver
+
+#
+# download ProteoWizard and extract it to C:\pwiz
+#
+
+# Pull latest version from TeamCity
+# RUN wget -O- "https://teamcity.labkey.org/httpAuth/app/rest/builds/?locator=buildType:bt36,status:success,running:false,count:1&guest=1" | sed -e 's#.*build id=\"\([0-9]*\)\".*#\1#' >/tmp/pwiz.build
+
+# To specify a particular build,
+# e.g. https://teamcity.labkey.org/viewLog.html?buildId=574320&buildTypeId=bt36&tab=artifacts&guest=1
+RUN echo "574320" >/tmp/pwiz.build
+
+RUN wget -O /tmp/pwiz.version https://teamcity.labkey.org/repository/download/bt36/`cat /tmp/pwiz.build`:id/VERSION?guest=1
+
+RUN mkdir /root/.wine/drive_c/pwiz && \
+    wget https://teamcity.labkey.org/repository/download/bt36/`cat /tmp/pwiz.build`:id/pwiz-bin-windows-x86-vc120-release-`cat /tmp/pwiz.version | tr " " "_"`.tar.bz2?guest=1 -qO- | \
+      tar --directory=/root/.wine/drive_c/pwiz -xj
 
 ## Prepare for container testing following 
 ## https://github.com/phnmnl/phenomenal-h2020/wiki/Testing-Guide-Proposal-3
@@ -77,7 +89,6 @@ RUN mkdir /data
 WORKDIR /data
 
 CMD ["wine", "msconvert" ]
-
 
 ## If you need a proxy during build, don't put it into the Dockerfile itself:
 ## docker build --build-arg http_proxy=http://www-cache.ipb-halle.de:3128/  -t phnmnl/pwiz:3.0.9098-0.1 .
