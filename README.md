@@ -45,7 +45,9 @@ Please see LICENSES/LICENSE, this Apache License Covers Core ProteoWizard Tools 
 
 ### ADDENDUM TO APACHE LICENSE
 
-To the best of our ability we deliver this software to you under the Apache 2.0 License listed below (the source code is available in the ProteoWizard project). This software does, however, depend on other software libraries which place further restrictions on its use and redistribution. By accepting the license terms for this software, you agree to comply with the restrictions imposed on you by the license agreements of the software libraries on which it depends:
+To the best of our ability we deliver this software to you under the Apache 2.0 License listed below (the source code is available in the ProteoWizard project). This software does, however, depend on other software libraries which place further restrictions on its use and redistribution. By accepting the license terms for this software, you agree to comply with the restrictions imposed on you by the
+[license agreements of the software libraries](LICENSES/VENDORLICENSES.shtml)
+ on which it depends:
 
 * AB Sciex WIFF Reader Library
 * Agilent Mass Hunter Data Access Component Library
