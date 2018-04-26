@@ -66,7 +66,7 @@ The currently tested vendor formats are:
 
 To run the MSconvertGUI as shown in the above screenshot, you have to enable X11 access on the client machine, and pass the X11 information to the container:
 
-`docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v $HOME:/data:rw phnmnl/pwiz--i-agree-to-the-vendor-licenses wine MSconvertGUI`
+`docker run --rm -v $HOME/.Xauthority:/root/.Xauthority:r -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v $HOME:/data:rw phnmnl/pwiz--i-agree-to-the-vendor-licenses wine MSconvertGUI`
 
 ## Galaxy usage
 
