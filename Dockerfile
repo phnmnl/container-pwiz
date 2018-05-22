@@ -68,7 +68,7 @@ RUN winetricks -q win7 && xvfb-run winetricks -q vcrun2008 corefonts && xvfb-run
 
 # To specify a particular build,
 # e.g. https://teamcity.labkey.org/viewLog.html?buildId=574320&buildTypeId=bt36&tab=artifacts&guest=1
-RUN echo "574320" >/tmp/pwiz.build
+RUN echo "583654" >/tmp/pwiz.build
 
 RUN wget -O /tmp/pwiz.version https://teamcity.labkey.org/repository/download/bt36/`cat /tmp/pwiz.build`:id/VERSION?guest=1
 
