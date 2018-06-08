@@ -1,0 +1,12 @@
+#!/bin/sh
+
+GLOBALWINEPREFIX=/wineprefix
+MYWINEPREFIX=/mywineprefix/my
+
+mkdir -p "$MYWINEPREFIX"
+cp -v "$GLOBALWINEPREFIX"/*.reg "$MYWINEPREFIX"
+cp -avx "$GLOBALWINEPREFIX/dosdevices" "$MYWINEPREFIX"
+
+export WINEPREFIX=$MYWINEPREFIX
+wine "$@"
+

@@ -4,7 +4,7 @@ FROM i386/debian:stretch-backports
 ### set metadata
 ENV TOOL_NAME=msconvert
 ENV TOOL_VERSION=3.0.18142
-ENV CONTAINER_VERSION=1.1
+ENV CONTAINER_VERSION=1.2
 ENV CONTAINER_GITHUB=https://github.com/phnmnl/container-pwiz
 
 LABEL version="${CONTAINER_VERSION}"
@@ -50,10 +50,14 @@ ENV WINEARCH win32
 ENV WINEDEBUG -all,err+all
 ENV WINEPATH "C:\pwiz"
 ENV DISPLAY :0
-WORKDIR /root/
+
+# To be singularity friendly, avoid installing anything to /root
+RUN mkdir /wineprefix/
+ENV WINEPREFIX /wineprefix
+WORKDIR /wineprefix
 
 # wineserver needs to shut down properly!!! 
-ADD waitonprocess.sh /root/waitonprocess.sh
+ADD waitonprocess.sh /wineprefix/waitonprocess.sh
 RUN chmod +x waitonprocess.sh
 
 # Install dependencies
@@ -74,9 +78,9 @@ RUN echo "583654" >/tmp/pwiz.build
 
 RUN wget -O /tmp/pwiz.version https://teamcity.labkey.org/repository/download/bt36/`cat /tmp/pwiz.build`:id/VERSION?guest=1
 
-RUN mkdir /root/.wine/drive_c/pwiz && \
+RUN mkdir /wineprefix/drive_c/pwiz && \
     wget https://teamcity.labkey.org/repository/download/bt36/`cat /tmp/pwiz.build`:id/pwiz-bin-windows-x86-vc120-release-`cat /tmp/pwiz.version | tr " " "_"`.tar.bz2?guest=1 -qO- | \
-      tar --directory=/root/.wine/drive_c/pwiz -xj
+      tar --directory=/wineprefix/drive_c/pwiz -xj
 
 ## Add wrapper with xauth handling
 ADD MSconvertGUI.sh /usr/local/bin
@@ -89,11 +93,16 @@ RUN chmod +x /usr/local/bin/runTest1.sh
 ADD runTest2.sh /usr/local/bin/runTest2.sh
 RUN chmod +x /usr/local/bin/runTest2.sh
 
+# Prepare that a user-specific WINEPREFIX can be set,
+# since the global wineprefix is owned by root
+ADD mywine /usr/local/bin/mywine
+RUN mkdir /mywineprefix ; rm '/wineprefix/dosdevices/c:' ; ln -sf /wineprefix/drive_c /wineprefix/dosdevices/c\: ; chmod 777 /mywineprefix ; chmod +x /usr/local/bin/mywine ; ln -sf /wineprefix/drive_c '/wineprefix/dosdevices/c:'
+
 # Set up working directory and permissions to let user xclient save data
 RUN mkdir /data
 WORKDIR /data
 
-CMD ["wine", "msconvert" ]
+CMD ["mywine", "msconvert" ]
 
 ## If you need a proxy during build, don't put it into the Dockerfile itself:
 ## docker build --build-arg http_proxy=http://www-cache.ipb-halle.de:3128/  -t phnmnl/pwiz:3.0.9098-0.1 .
