@@ -3,7 +3,7 @@ FROM i386/debian:stretch-backports
 ################################################################################
 ### set metadata
 ENV TOOL_NAME=msconvert
-ENV TOOL_VERSION=3.0.18114
+ENV TOOL_VERSION=3.0.18142
 ENV CONTAINER_VERSION=1.1
 ENV CONTAINER_GITHUB=https://github.com/phnmnl/container-pwiz
 
@@ -68,6 +68,8 @@ RUN winetricks -q win7 && xvfb-run winetricks -q vcrun2008 corefonts && xvfb-run
 
 # To specify a particular build,
 # e.g. https://teamcity.labkey.org/viewLog.html?buildId=574320&buildTypeId=bt36&tab=artifacts&guest=1
+# Don't forget to also change TOOL_VERSION=3.0.XXXX at the top of this file
+
 RUN echo "583654" >/tmp/pwiz.build
 
 RUN wget -O /tmp/pwiz.version https://teamcity.labkey.org/repository/download/bt36/`cat /tmp/pwiz.build`:id/VERSION?guest=1
