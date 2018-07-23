@@ -7,14 +7,14 @@ ENV TOOL_VERSION=3.0.18142
 ENV CONTAINER_VERSION=1.2
 ENV CONTAINER_GITHUB=https://github.com/phnmnl/container-pwiz
 
-LABEL version="${CONTAINER_VERSION}"
-LABEL software.version="${TOOL_VERSION}"
-LABEL software="${TOOL_NAME}"
+LABEL version=1.2
+LABEL software.version=3.0.18142
+LABEL software=msconvert
 LABEL base.image="i386/debian:stretch-backports"
 LABEL description="Convert LC/MS or GC/MS RAW vendor files to mzML."
-LABEL website="${CONTAINER_GITHUB}"
-LABEL documentation="${CONTAINER_GITHUB}"
-LABEL license="${CONTAINER_GITHUB}"
+LABEL website=https://github.com/phnmnl/container-pwiz
+LABEL documentation=https://github.com/phnmnl/container-pwiz
+LABEL license=https://github.com/phnmnl/container-pwiz
 LABEL tags="Metabolomics"
 
 # we need wget, bzip2, wine from winehq, 
