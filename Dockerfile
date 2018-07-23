@@ -1,107 +1,108 @@
-FROM suchja/wine:dev
+FROM i386/debian:stretch-backports
 
-MAINTAINER PhenoMeNal-H2020 Project ( phenomenal-h2020-users@googlegroups.com )
+################################################################################
+### set metadata
+ENV TOOL_NAME=msconvert
+ENV TOOL_VERSION=3.0.18142
+ENV CONTAINER_VERSION=1.2
+ENV CONTAINER_GITHUB=https://github.com/phnmnl/container-pwiz
 
-LABEL Description="Convert LC/MS or GC/MS RAW vendor files to mzML."
+LABEL version="${CONTAINER_VERSION}"
+LABEL software.version="${TOOL_VERSION}"
+LABEL software="${TOOL_NAME}"
+LABEL base.image="i386/debian:stretch-backports"
+LABEL description="Convert LC/MS or GC/MS RAW vendor files to mzML."
+LABEL website="${CONTAINER_GITHUB}"
+LABEL documentation="${CONTAINER_GITHUB}"
+LABEL license="${CONTAINER_GITHUB}"
+LABEL tags="Metabolomics"
 
-# unfortunately we later need to wait on wineserver.
-# Thus a small script for waiting is supplied.
-USER root
-COPY waitonprocess.sh /scripts/
-RUN chmod a+rx /scripts/waitonprocess.sh
+# we need wget, bzip2, wine from winehq, 
+# xvfb to fake X11 for winetricks during installation,
+# and winbind because wine complains about missing 
+RUN apt-get update && \
+    apt-get -y install wget gnupg && \
+    echo "deb http://dl.winehq.org/wine-builds/debian/ stretch main" >> \
+      /etc/apt/sources.list.d/winehq.list && \
+    wget http://dl.winehq.org/wine-builds/Release.key -qO- | apt-key add - && \
+    apt-get update && \
+    apt-get -y --install-recommends install \
+      bzip2 unzip curl \
+      winehq-devel \
+      winbind \
+      xvfb \
+      cabextract \
+      && \
+    apt-get -y clean && \
+    rm -rf \
+      /var/lib/apt/lists/* \
+      /usr/share/doc \
+      /usr/share/doc-base \
+      /usr/share/man \
+      /usr/share/locale \
+      /usr/share/zoneinfo \
+      && \
+    wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
+      -O /usr/local/bin/winetricks && chmod +x /usr/local/bin/winetricks
 
-## Freshen packages
-RUN apt-get -y update
-RUN apt-get -y upgrade
-
-## Get dummy X11 server
-RUN apt-get install -y xvfb winbind cabextract
-
-# Patch wintricks
-RUN apt-get install wget patch
-
-WORKDIR /usr/local/bin
-RUN wget -O /tmp/winetricks.patch "https://github.com/Winetricks/winetricks/commit/a5e32a8a4329ec663690a4a8cf40e3ab071aad2d.patch"
-RUN patch -u -p1 winetricks /tmp/winetricks.patch
-RUN mv winetricks winetricks_old
-RUN wget -O winetricks "https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks"
-RUN chmod 755 winetricks
-
-# WINE does not like running as root
-USER xclient
-WORKDIR /home/xclient
-
-# BUG: Download msxml3 manually
-RUN wget -O /tmp/cnet.tmp 'http://download.cnet.com/Microsoft-XML-Parser-MSXML-3-0-Service-Pack-7-SP7/3000-7241_4-10731613.html'
-RUN export ln="$(cat /tmp/cnet.tmp | grep -n 'Download Now' | sed -e 's/\:.*//')" \
-		&& export ln=$(expr $ln - 1) \
-		&& export dl="$(sed -n -e "$ln,$ln p" /tmp/cnet.tmp | perl -pe "s/.*href\=\'//" | perl -pe "s/\'.*//")" \
-		&& wget -O /tmp/cnet2.tmp "$dl"
-RUN export dl2="$(cat /tmp/cnet2.tmp | grep msxml3 | grep data-dl-url | perl -pe "s/.*\=\'//" | perl -pe "s/\'.*//")" \
-		&& mkdir -p .cache/winetricks/msxml3 \
-		&& wget -O .cache/winetricks/msxml3/msxml3.msi "$dl2"
-
-# get at least error information from wine
+# put C:\pwiz on the Windows search path
+ENV WINEARCH win32
 ENV WINEDEBUG -all,err+all
+ENV WINEPATH "C:\pwiz"
+ENV DISPLAY :0
 
-# Install Visual Runtime
-RUN wine wineboot --init \
-                && /scripts/waitonprocess.sh wineserver \
-                && /usr/bin/xvfb-run winetricks --unattended vcrun2008 \
-                && /scripts/waitonprocess.sh wineserver
+# To be singularity friendly, avoid installing anything to /root
+RUN mkdir /wineprefix/
+ENV WINEPREFIX /wineprefix
+WORKDIR /wineprefix
 
-# Install Visual Runtime
-RUN wine wineboot --init \
-                && /scripts/waitonprocess.sh wineserver \
-                && /usr/bin/xvfb-run winetricks --unattended msxml3 \
-                && /scripts/waitonprocess.sh wineserver
+# wineserver needs to shut down properly!!! 
+ADD waitonprocess.sh /wineprefix/waitonprocess.sh
+RUN chmod +x waitonprocess.sh
 
+# Install dependencies
+RUN winetricks -q win7 && xvfb-run winetricks -q vcrun2008 corefonts && xvfb-run winetricks -q dotnet452 && ./waitonprocess.sh wineserver
 
-# Install .NET Framework 3.5sp1
-RUN wine wineboot --init \
-                && /scripts/waitonprocess.sh wineserver \
-                && /usr/bin/xvfb-run winetricks --unattended dotnet35sp1 \
-                && /scripts/waitonprocess.sh wineserver
-
-# Install .NET Framework 4.0
-RUN wine wineboot --init \
-                && /scripts/waitonprocess.sh wineserver \
-                && /usr/bin/xvfb-run winetricks --unattended dotnet40 dotnet_verifier \
-                && /scripts/waitonprocess.sh wineserver
-
-# Pull from TeamCity
-ADD http://teamcity.labkey.org:8080/repository/download/bt36/3391%20(9098)/pwiz-setup-3.0.9098-x86.msi?guest=1 /tmp/pwiz-setup.msi
-USER root
-RUN chmod 755 /tmp/pwiz-setup.msi
-RUN echo -n "3.0.9098" > /tmp/pwiz.version
-USER xclient
+#
+# download ProteoWizard and extract it to C:\pwiz
+#
 
 # Pull latest version from TeamCity
-#RUN wget -O /tmp/pwiz.version 'http://teamcity.labkey.org:8080/repository/download/bt36/.lastSuccessful/VERSION?guest=1'
-#RUN wget -O /tmp/pwiz-setup.msi 'http://teamcity.labkey.org:8080/repository/download/bt36/.lastSuccessful/pwiz-setup-'$(cat /tmp/pwiz.version)'-x86.msi?guest=1'
-#RUN chmod 755 /tmp/pwiz-setup.msi
+# RUN wget -O- "https://teamcity.labkey.org/httpAuth/app/rest/builds/?locator=buildType:bt36,status:success,running:false,count:1&guest=1" | sed -e 's#.*build id=\"\([0-9]*\)\".*#\1#' >/tmp/pwiz.build
 
-RUN wine wineboot --init \
-		&& /scripts/waitonprocess.sh wineserver \
-		&& msiexec /i /tmp/pwiz-setup.msi \
-		&& ln -s "/home/xclient/.wine/drive_c/Program Files/ProteoWizard/ProteoWizard $(cat /tmp/pwiz.version)" "/home/xclient/.wine/drive_c/Program Files/ProteoWizard/ProteoWizard" \
-		&& xvfb-run wine "/home/xclient/.wine/drive_c/Program Files/ProteoWizard/ProteoWizard/msconvert.exe" \
-		&& /scripts/waitonprocess.sh wineserver
+# To specify a particular build,
+# e.g. https://teamcity.labkey.org/viewLog.html?buildId=574320&buildTypeId=bt36&tab=artifacts&guest=1
+# Don't forget to also change TOOL_VERSION=3.0.XXXX at the top of this file
+
+RUN echo "583654" >/tmp/pwiz.build
+
+RUN wget -O /tmp/pwiz.version https://teamcity.labkey.org/repository/download/bt36/`cat /tmp/pwiz.build`:id/VERSION?guest=1
+
+RUN mkdir /wineprefix/drive_c/pwiz && \
+    wget https://teamcity.labkey.org/repository/download/bt36/`cat /tmp/pwiz.build`:id/pwiz-bin-windows-x86-vc120-release-`cat /tmp/pwiz.version | tr " " "_"`.tar.bz2?guest=1 -qO- | \
+      tar --directory=/wineprefix/drive_c/pwiz -xj
+
+## Add wrapper with xauth handling
+ADD MSconvertGUI.sh /usr/local/bin
+
+## Prepare for container testing following 
+## https://github.com/phnmnl/phenomenal-h2020/wiki/Testing-Guide-Proposal-3
+ADD runTest1.sh /usr/local/bin/runTest1.sh
+RUN chmod +x /usr/local/bin/runTest1.sh
+
+ADD runTest2.sh /usr/local/bin/runTest2.sh
+RUN chmod +x /usr/local/bin/runTest2.sh
+
+# Prepare that a user-specific WINEPREFIX can be set,
+# since the global wineprefix is owned by root
+ADD mywine /usr/local/bin/mywine
+RUN mkdir /mywineprefix ; rm '/wineprefix/dosdevices/c:' ; ln -sf /wineprefix/drive_c /wineprefix/dosdevices/c\: ; chmod 777 /mywineprefix ; chmod +x /usr/local/bin/mywine ; ln -sf /wineprefix/drive_c '/wineprefix/dosdevices/c:'
 
 # Set up working directory and permissions to let user xclient save data
-USER root
 RUN mkdir /data
-RUN chmod 777 /data
-RUN chown xclient:xusers /data
-RUN chown xclient:xusers /
 WORKDIR /data
 
-#USER xclient
-
-#ENTRYPOINT [ "wine", "/home/xclient/.wine/drive_c/Program Files/ProteoWizard/ProteoWizard/msconvert.exe" ]
-#ENTRYPOINT [ "/bin/bash", "-c" ]
+CMD ["mywine", "msconvert" ]
 
 ## If you need a proxy during build, don't put it into the Dockerfile itself:
 ## docker build --build-arg http_proxy=http://www-cache.ipb-halle.de:3128/  -t phnmnl/pwiz:3.0.9098-0.1 .
-
-
