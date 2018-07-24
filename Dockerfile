@@ -3,12 +3,12 @@ FROM i386/debian:stretch-backports
 ################################################################################
 ### set metadata
 ENV TOOL_NAME=msconvert
-ENV TOOL_VERSION=3.0.18142
+ENV TOOL_VERSION=3.0.18205
 ENV CONTAINER_VERSION=1.2
 ENV CONTAINER_GITHUB=https://github.com/phnmnl/container-pwiz
 
 LABEL version=1.2
-LABEL software.version=3.0.18142
+LABEL software.version=3.0.18205
 LABEL software=msconvert
 LABEL base.image="i386/debian:stretch-backports"
 LABEL description="Convert LC/MS or GC/MS RAW vendor files to mzML."
@@ -74,7 +74,7 @@ RUN winetricks -q win7 && xvfb-run winetricks -q vcrun2008 corefonts && xvfb-run
 # e.g. https://teamcity.labkey.org/viewLog.html?buildId=574320&buildTypeId=bt36&tab=artifacts&guest=1
 # Don't forget to also change TOOL_VERSION=3.0.XXXX at the top of this file
 
-RUN echo "583654" >/tmp/pwiz.build
+RUN echo "606438" >/tmp/pwiz.build
 
 RUN wget -O /tmp/pwiz.version https://teamcity.labkey.org/repository/download/bt36/`cat /tmp/pwiz.build`:id/VERSION?guest=1
 
