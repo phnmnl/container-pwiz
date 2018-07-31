@@ -57,16 +57,16 @@ convert GC/MS data for example from the Waters GCT Premier or Agilent instrument
 
 The conversion can be started with e.g.
 
-`docker run -v $PWD:/data:rw phnmnl/phnmnl/pwiz--i-agree-to-the-vendor-licenses:latest /data/neg-MM8_1-A,1_01_376.d -o /data/ --mzML`
+`docker run -v $PWD:/data:rw phnmnl/phnmnl/pwiz-i-agree-to-the-vendor-licenses:latest /data/neg-MM8_1-A,1_01_376.d -o /data/ --mzML`
 
 The currently tested vendor formats are:
 
-* mzXML: `docker run -it -v $PWD:/data phnmnl/pwiz--i-agree-to-the-vendor-licenses:latest threonine_i2_e35_pH_tree.mzXML`
-* Bruker .d: `docker run -it -v $PWD:/data phnmnl/phnmnl/pwiz--i-agree-to-the-vendor-licenses:latest neg-MM8_1-A,1_01_376.d`
+* mzXML: `docker run -it -v $PWD:/data phnmnl/pwiz-i-agree-to-the-vendor-licenses:latest threonine_i2_e35_pH_tree.mzXML`
+* Bruker .d: `docker run -it -v $PWD:/data phnmnl/phnmnl/pwiz-i-agree-to-the-vendor-licenses:latest neg-MM8_1-A,1_01_376.d`
 
 To run the MSconvertGUI as shown in the above screenshot, you have to enable X11 access on the client machine, and pass the X11 information to the container:
 
-`docker run --rm -v $HOME/.Xauthority:/root/.Xauthority:r -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v $HOME:/data:rw phnmnl/pwiz--i-agree-to-the-vendor-licenses wine MSconvertGUI`
+`docker run --rm -v $HOME/.Xauthority:/root/.Xauthority:r -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v $HOME:/data:rw phnmnl/pwiz-i-agree-to-the-vendor-licenses wine MSconvertGUI`
 
 ## Galaxy usage
 
@@ -84,7 +84,7 @@ in the created container. By building this container, you agree
 to all the vendor licenses that are shown at the above download links,
 and also included in the container and Dockerfile repository. To build, please use
 
-`docker build --tag="phnmnl/pwiz--i-agree-to-the-vendor-licenses:latest" .`
+`docker build --tag="phnmnl/pwiz-i-agree-to-the-vendor-licenses:latest" .`
 
 Also note that the build is known to fail with Docker-1.9, make sure to use Docker-1.10 or above.
 

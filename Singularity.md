@@ -25,9 +25,9 @@ First, build the docker image as described in the README.md, and push it
 into a docker registry: 
 
 ```
-docker build --tag="phnmnl/pwiz--i-agree-to-the-vendor-licenses:latest" .
-docker tag phnmnl/pwiz--i-agree-to-the-vendor-licenses localhost:5000/pwiz--i-agree-to-the-vendor-licenses
-docker push localhost:5000/pwiz--i-agree-to-the-vendor-licenses:latest
+docker build --tag="phnmnl/pwiz-i-agree-to-the-vendor-licenses:latest" .
+docker tag phnmnl/pwiz-i-agree-to-the-vendor-licenses localhost:5000/pwiz-i-agree-to-the-vendor-licenses
+docker push localhost:5000/pwiz-i-agree-to-the-vendor-licenses:latest
 ```
 
 As root you can then convert the docker image with instructions in `Singularity`
@@ -37,16 +37,16 @@ write to the WINEPREFIX inside the container:
 
 
 ```
-SINGULARITY_NOHTTPS=1 singularity build --writable pwiz--i-agree-to-the-vendor-licenses.simg Singularity
+SINGULARITY_NOHTTPS=1 singularity build --writable pwiz-i-agree-to-the-vendor-licenses.simg Singularity
 ```
 
-Now you are ready to execute the `pwiz--i-agree-to-the-vendor-licenses.simg`
+Now you are ready to execute the `pwiz-i-agree-to-the-vendor-licenses.simg`
 as a normal user. We need to specify a temporary diectory 
 with `-S /mywineprefix/`, and we can optionally mount an NFS share that exists 
 on the host system with `-B /nfs`. 
 
 
 ```
-singularity exec -B /nfs -S /mywineprefix/ ./pwiz--i-agree-to-the-vendor-licenses.simg mywine msconvert /nfs/.../neg_MM8_1-A,2_01_9980.d -o $HOME/mzML`
+singularity exec -B /nfs -S /mywineprefix/ ./pwiz-i-agree-to-the-vendor-licenses.simg mywine msconvert /nfs/.../neg_MM8_1-A,2_01_9980.d -o $HOME/mzML`
 ```
 
