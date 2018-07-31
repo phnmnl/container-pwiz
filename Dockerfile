@@ -4,10 +4,10 @@ FROM i386/debian:stretch-backports
 ### set metadata
 ENV TOOL_NAME=msconvert
 ENV TOOL_VERSION=3.0.18205
-ENV CONTAINER_VERSION=1.2
+ENV CONTAINER_VERSION=1.3
 ENV CONTAINER_GITHUB=https://github.com/phnmnl/container-pwiz
 
-LABEL version=1.2
+LABEL version=1.3
 LABEL software.version=3.0.18205
 LABEL software=msconvert
 LABEL base.image="i386/debian:stretch-backports"
