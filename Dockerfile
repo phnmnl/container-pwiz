@@ -24,7 +24,7 @@ RUN apt-get update && \
     apt-get -y install wget gnupg && \
     echo "deb http://dl.winehq.org/wine-builds/debian/ stretch main" >> \
       /etc/apt/sources.list.d/winehq.list && \
-    wget http://dl.winehq.org/wine-builds/Release.key -qO- | apt-key add - && \
+    wget http://dl.winehq.org/wine-builds/winehq.key -qO- | apt-key add - && \
     apt-get update && \
     apt-get -y --install-recommends install \
       bzip2 unzip curl \
@@ -61,26 +61,26 @@ ADD waitonprocess.sh /wineprefix/waitonprocess.sh
 RUN chmod +x waitonprocess.sh
 
 # Install dependencies
-RUN winetricks -q win7 && xvfb-run winetricks -q vcrun2008 corefonts && xvfb-run winetricks -q dotnet452 && ./waitonprocess.sh wineserver
+RUN winetricks -q win7 && xvfb-run winetricks -q vcrun2008 corefonts && xvfb-run winetricks -q dotnet452 && xvfb-run winetricks --force -q dotnet462  && ./waitonprocess.sh wineserver
 
 #
 # download ProteoWizard and extract it to C:\pwiz
 #
 
 # Pull latest version from TeamCity
-# RUN wget -O- "https://teamcity.labkey.org/httpAuth/app/rest/builds/?locator=buildType:bt36,status:success,running:false,count:1&guest=1" | sed -e 's#.*build id=\"\([0-9]*\)\".*#\1#' >/tmp/pwiz.build
+RUN wget -O- "https://teamcity.labkey.org/httpAuth/app/rest/builds/?locator=buildType:bt36,status:success,running:false,count:1&guest=1" | sed -e 's#.*build id=\"\([0-9]*\)\".*#\1#' >/tmp/pwiz.build
 
 # To specify a particular build,
 # e.g. https://teamcity.labkey.org/viewLog.html?buildId=574320&buildTypeId=bt36&tab=artifacts&guest=1
 # Don't forget to also change TOOL_VERSION=3.0.XXXX at the top of this file
 
-RUN echo "606438" >/tmp/pwiz.build
+#RUN echo "606438" >/tmp/pwiz.build
 
-RUN wget -O /tmp/pwiz.version https://teamcity.labkey.org/repository/download/bt36/`cat /tmp/pwiz.build`:id/VERSION?guest=1
-
+#RUN wget -O /tmp/pwiz.version https://teamcity.labkey.org/repository/download/bt36/`cat /tmp/pwiz.build`:id/VERSION?guest=1
+RUN wget -O /tmp/pwiz.artifacts https://teamcity.labkey.org/httpAuth/app/rest/builds/id:`cat /tmp/pwiz.build`/artifacts/children/?guest=1
 RUN mkdir /wineprefix/drive_c/pwiz && \
-    wget https://teamcity.labkey.org/repository/download/bt36/`cat /tmp/pwiz.build`:id/pwiz-bin-windows-x86-vc120-release-`cat /tmp/pwiz.version | tr " " "_"`.tar.bz2?guest=1 -qO- | \
-      tar --directory=/wineprefix/drive_c/pwiz -xj
+    wget -O /tmp/pwiz.tar.bz2 https://teamcity.labkey.org`cat /tmp/pwiz.artifacts | grep -o 'content href="[^"]*bz2' | sed 's/content href="//g'`?guest=1
+RUN  tar -f /tmp/pwiz.tar.bz2 --directory=/wineprefix/drive_c/pwiz -xj
 
 ## Add wrapper with xauth handling
 ADD MSconvertGUI.sh /usr/local/bin
