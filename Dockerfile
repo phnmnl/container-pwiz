@@ -24,7 +24,7 @@ RUN apt-get update && \
     apt-get -y install wget gnupg && \
     echo "deb http://dl.winehq.org/wine-builds/debian/ stretch main" >> \
       /etc/apt/sources.list.d/winehq.list && \
-    wget http://dl.winehq.org/wine-builds/Release.key -qO- | apt-key add - && \
+    wget http://dl.winehq.org/wine-builds/winehq.key -qO- | apt-key add - && \
     apt-get update && \
     apt-get -y --install-recommends install \
       bzip2 unzip curl \
