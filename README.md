@@ -9,6 +9,11 @@ Conversion of mass spectrometry vendor formats to mzML.
 
 ## Description
 
+Please note that there is now a container by the Proteowizard team
+as part of their continuous integration pipeline
+which should be used instead of this one:
+https://hub.docker.com/r/chambm/pwiz-skyline-i-agree-to-the-vendor-licenses
+
 The first step in a metabolomics data processing workflow with Open
 Source tools is the conversion to an open raw data format like
 [mzML](https://github.com/HUPO-PSI/mzML/). One of the main routes to mzML-formatted data is using Open Source converter
