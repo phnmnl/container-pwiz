@@ -11,7 +11,7 @@ Conversion of mass spectrometry vendor formats to mzML.
 
 Please note that there is now a container by the Proteowizard team
 as part of their continuous integration pipeline
-which should be used instead of this one:
+which should be used instead of this `phnmnl/container-pwiz`:
 https://hub.docker.com/r/chambm/pwiz-skyline-i-agree-to-the-vendor-licenses
 
 The first step in a metabolomics data processing workflow with Open
