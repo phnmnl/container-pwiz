@@ -3,6 +3,9 @@
 # Proteowizard msconvert
 Version: 3.0.18205
 
+## This container is unmaintained
+Please head over to https://github.com/ProteoWizard/container for the new upstream home.
+
 ## Short Description
 
 Conversion of mass spectrometry vendor formats to mzML.
